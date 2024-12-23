@@ -100,7 +100,7 @@ spark-int: prepare-env custom-jars
 	  --jars "/custom-jars/$(AWS_BUNDLE_FILE),/custom-jars/$(HADOOP_AWS_FILE)" \
 	  --conf "spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem" 
 
-spark-test: prepare-env custom-jars
+spark-test: prepare-env custom-jars test
 	@echo "Starting PySpark submit test job.."
 	$(eval BUCKET_NAME := $(shell cat bucket_name.txt|awk -F': ' '{print $$2}'))
 	echo "bucket is $(BUCKET_NAME)" 
@@ -115,6 +115,8 @@ spark-test: prepare-env custom-jars
 
 spark-s3tables: prepare-env custom-jars
 	@echo "Starting spark in interactive mode for s3 tables access..."
+	$(eval ACCOUNT_ID := $(shell cat account_id.txt))
+	echo "account is $(ACCOUNT_ID)" 
 	docker run -it \
 	  -v $(CUSTOM_JARS_DIR):/custom-jars \
 	  -v $(shell pwd):/app \
@@ -124,7 +126,7 @@ spark-s3tables: prepare-env custom-jars
 	  --jars "/custom-jars/$(AWS_SDK2_BUNDLE_FILE),/custom-jars/$(AWS_S3_TABLES_FILE),/custom-jars/$(ICEBERG_RUNTIME_FILE),/custom-jars/commons-configuration2-2.11.0.jar,/custom-jars/caffeine-3.1.8.jar" \
 		--conf spark.sql.catalog.s3tablesbucket=org.apache.iceberg.spark.SparkCatalog \
 		--conf spark.sql.catalog.s3tablesbucket.catalog-impl=software.amazon.s3tables.iceberg.S3TablesCatalog \
-		--conf spark.sql.catalog.s3tablesbucket.warehouse=arn:aws:s3tables:us-west-2:337909785149:bucket/test \
+		--conf spark.sql.catalog.s3tablesbucket.warehouse=arn:aws:s3tables:us-west-2:$(ACCOUNT_ID):bucket/test \
 		--conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
 
 #spark:3.5.3 \
