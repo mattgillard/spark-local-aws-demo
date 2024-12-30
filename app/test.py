@@ -17,7 +17,7 @@ spark = SparkSession.builder \
 
 # Read the JSON file from S3
 try:
-    df = spark.read.json(f"s3a://{bucket_name}/movies_nd.json")
+    df = spark.read.json(f"s3a://{bucket_name}/movies.ndjson")
     print(f"Successfully loaded data. Total records: {df.count()}")
 except Exception as e:
     print(f"Error loading data: {str(e)}")

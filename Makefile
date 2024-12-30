@@ -123,7 +123,7 @@ spark-s3tables: prepare-env custom-jars
 	  --env-file ./.env \
 	  spark-plotext \
 	  /opt/spark/bin/pyspark \
-	  --jars "/custom-jars/$(AWS_SDK2_BUNDLE_FILE),/custom-jars/$(AWS_S3_TABLES_FILE),/custom-jars/$(ICEBERG_RUNTIME_FILE),/custom-jars/commons-configuration2-2.11.0.jar,/custom-jars/caffeine-3.1.8.jar" \
+	  --jars "/custom-jars/$(AWS_SDK2_BUNDLE_FILE),/custom-jars/$(AWS_S3_TABLES_FILE),/custom-jars/$(ICEBERG_RUNTIME_FILE),/custom-jars/commons-configuration2-2.11.0.jar,/custom-jars/caffeine-3.1.8.jar,/custom-jars/$(AWS_BUNDLE_FILE),/custom-jars/$(HADOOP_AWS_FILE)" \
 		--conf spark.sql.catalog.s3tablesbucket=org.apache.iceberg.spark.SparkCatalog \
 		--conf spark.sql.catalog.s3tablesbucket.catalog-impl=software.amazon.s3tables.iceberg.S3TablesCatalog \
 		--conf spark.sql.catalog.s3tablesbucket.warehouse=arn:aws:s3tables:us-west-2:$(ACCOUNT_ID):bucket/test \
